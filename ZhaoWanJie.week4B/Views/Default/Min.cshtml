@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Min";
+}
+
+<div style="margin-top:20px">
+    <table class="table table-bordered" id="table-fund"> 
+        <thead class="text-center">
+            <tr>
+                <td>商品名称</td>
+                <td>采购规格</td>
+                <td>采购日期</td>
+                <td>供应商</td>
+                <td>生成日期</td>
+                <td>有效日期</td>
+                <td>采购数量</td>
+                <td>采购单价</td>
+                <td>本批次总价</td>
+            </tr>
+        </thead>
+        <tbody id="tg" class="text-center"></tbody>
+    </table>
+</div>
+<span id="zong">总库存量：750</span>
+<span id="jia">总价：3910.2元</span>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/Default/Mins",
+            type: "GET",
+            dataType: "json",
+            success:
+                function (res) {
+                    var ty = "";
+                    $(res).each(function () {
+                        ty += "<tr>"
+                            + "<td>" + this.Mname + "</td>"
+                            + "<td>" + this.Mgg + "</td>"
+                            + "<td>" + this.Mtime + "</td>"
+                            + "<td>" + this.Gname + "</td>"
+                            + "<td>" + this.Sctime + "</td>"
+                            + "<td>" + this.Yxtime + "</td>"
+                            + "<td>" + this.Mcount + "</td>"
+                            + "<td>" + this.Mprice + "</td>"
+                            + "<td><input id='Button1' type='button' value='"+this.Mcount * this.Mprice+"' class='btn btn-primary'/></td>"
+                            + "</tr>";
+                    })
+                    $("#tg").append(ty);
+                }
+        }) 
+
+         
+         
+    });
+     
+</script>

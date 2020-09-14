@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Add";
+}
+<input type="hidden" @ViewBag.ids/>
+    <table>
+        <tr>
+            <td>商品名称：</td>
+            <td><input id="Text1" type="text" /></td>
+        </tr>
+        <tr>
+            <td>采购规格：</td>
+            <td><input id="Text2" type="text" /></td>
+        </tr>
+        <tr>
+            <td>采购日期：</td>
+            <td><input id="Text3" type="text" /></td>
+        </tr>
+        <tr>
+            <td>供应商：</td>
+            <td><select id="Select1">
+    <option value="0"></option>
+
+</select></td>
+        </tr>
+        <tr>
+            <td>生产日期：</td>
+            <td><input id="Text4" type="text" /></td>
+        </tr>
+        <tr>
+            <td>有效日期：</td>
+            <td><input id="Text5" type="text" /></td>
+        </tr>
+        <tr>
+            <td>采购数量：</td>
+            <td><input id="Text6" type="text" /></td>
+        </tr>
+        <tr>
+            <td>采购单价：</td>
+            <td><input id="Text7" type="text" /></td>
+        </tr>
+        <tr>
+            <td><input id="Button1" type="button" value="立即采购" /></td>
+            <td><input id="Button2" type="button" value="取消" /></td>
+        </tr>
+    </table>
+

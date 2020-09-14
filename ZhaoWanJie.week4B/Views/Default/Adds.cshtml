@@ -1,0 +1,142 @@
+﻿@model IEnumerable<Model.KuCun>
+
+@{
+    ViewBag.Title = "Adds";
+}
+
+<h2>采购</h2>
+
+
+<table class="table">
+    <tr>
+
+        <th>
+            商品名称
+        </th>
+        <th>
+            采购规格
+        </th>
+
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                 
+                @Html.DisplayFor(modelItem => item.Kname)<span style="color:red">不可编辑</span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuiGe)<span style="color:red">不可编辑</span>
+            </td>
+
+
+        </tr>
+    }
+    <tr>
+        <td>采购日期：</td>
+        <td><input id="Text3" type="text" readonly /><span style="color:red">不可编辑</span></td>
+    </tr>
+    <tr>
+        <td>供应商：</td>
+        <td>
+            <select id="Select1">
+                <option value="0">请选择</option>
+
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>生产日期：</td>
+        <td><input id="Text4" type="text" onclick="WdatePicker()"/></td>
+    </tr>
+    <tr>
+        <td>有效日期：</td>
+        <td><input id="Text5" type="text" onclick="WdatePicker()"/></td>
+    </tr>
+    <tr>
+        <td>采购数量：</td>
+        <td><input id="Text6" type="text" /></td>
+    </tr>
+    <tr>
+        <td>采购单价：</td>
+        <td><input id="Text7" type="text" /></td>
+    </tr>
+    <tr>
+        <td><input id="Button1" type="button" value="立即采购" onclick="ad()" /></td>
+        <td><input id="Button2" type="button" value="取消" /></td>
+    </tr>
+</table>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/My97DatePicker/My97DatePicker/calendar.js"></script>
+<script src="~/Scripts/My97DatePicker/My97DatePicker/WdatePicker.js"></script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/Default/Sele",
+            type: "GET",
+            dataType: "json",
+            success:
+                function (res) {
+                    var op = "";
+                    $(res).each(function () {
+                        op += "<option value='" + this.Gid + "'>" + this.Gname + "</option>";
+                    })
+                    $("#Select1").append(op);
+                }
+        })
+        var myDate = new Date();
+        var re = myDate.toLocaleDateString();
+        var ti = $("#Text3").val(re);
+    })
+    
+    function ad() {
+        var name = $("#Select1").val();
+        var gg = $("#Text6").val();
+        var tie = $("#Text3").val();
+        var gys = $("#Select1").val();
+        var scrq = $("#Text4").val();
+        var yxrq = $("#Text5").val();
+        var sl = $("#Text6").val();
+        var dj = $("#Text7").val();
+        var dd=/^[0-9]+(.[0-9]{2})?$/;
+
+        if (scrq > yxrq) {
+            alert("生产日期不能大于有效日期");
+            return;
+        }
+        if (sl == null || sl<0) {
+            alert("不能为空，且必须输入正整数");
+            return;
+        }
+        if (!dd.test(dj)) {
+            alert("采购价为两位小数！");
+            return;
+        }
+        $.ajax({
+            url: "/Default/addmingxi",
+            dataType: "json",
+            type: "GET",
+            data: {
+                Mname: name,
+                Mgg: gg,
+                Mtime: tie,
+                Gid: gys,
+                Sctime: scrq,
+                Yxtime: yxrq,
+                Mcount: sl,
+                Mprice: dj
+            },
+            success:
+                function (d) {
+                    if (d > 0) {
+                        alert("采购成功！");
+                    } else {
+                        alert("采购失败！");
+                    }
+                }
+        })
+    }
+</script>

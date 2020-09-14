@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div style="margin-top:20px">
+    <table class="table table-bordered">
+        <thead class="text-center">
+            <tr>
+                <td>商品名称</td>
+                <td>规格</td>
+                <td>库存量</td>
+                <td>批次</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+       <tbody id="tg" class="text-center"></tbody>
+    </table>
+</div>
+<div class="text-center"> 
+    <input id="Button1" type="button" value="首页" class="btn btn-primary" onclick="Shou()"/>
+    <input id="Button1" type="button" value="上一页" class="btn btn-primary" onclick="Shang()"/>
+    <input id="Button1" type="button" value="下一页" class="btn btn-primary" onclick="Xia()"/>
+    <input id="Button1" type="button" value="尾页" class="btn btn-primary" onclick="Wei()"/>
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<a style="cursor:pointer"></a>
+<script>
+
+    var pageindex = 1;
+    var pagesize = 3;
+    var pagecout = 0;
+    var allcount = 0;
+    $(document).ready(function () {
+        Show();
+    })
+    function Shou() {
+        pageindex = 1;
+        Show();
+    }
+    function Shang() {
+        pageindex--;
+        Show();
+    }
+    function Xia() {
+        pageindex++;
+        Show();
+    }
+    function Wei() {
+        pageindex = pagecout;
+        Show();
+    }
+    function Show() {
+        $.ajax({
+            url: "/Default/Show?pageindex=" + pageindex + "&pagesize=" + pagesize,
+            type: "GET",
+            dataType: "json",
+            success:
+                function (res) {
+                    pageindex = res.PageIndex;
+                    pagesize = res.PageSize;
+                    pagecout = res.PageCount;
+                    allcount = res.AllCount;
+                    var tb = "";
+                    $("#tg").empty();
+                    $(res.GetKuCuns).each(function () {
+                        tb += "<tr>"
+                            + "<td>" + this.Kname + "</td>"
+                            + "<td>" + this.GuiGe+"</td>"
+                            + "<td>" + this.Kcount + "</td>"
+                            + "<td><a style='cursor:pointer' onclick='pi()'>" + this.Pici + "批次</a></td>"
+                            + "<td><input id='Button1' type='button' value='进货' class='btn btn-primary' onclick='Jin(" + this.Kid + ")'/></td>"
+                            + "</tr>";
+                    })
+                    $("#tg").append(tb);
+                }
+        })
+    }
+    function Jin(Kid) {
+        location.href = "/Default/Adds?ids=" + Kid;
+    }
+    function pi() {
+        location.href = "/Default/Min";
+    }
+     
+</script>
+
